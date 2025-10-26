@@ -27,6 +27,7 @@ async function generateHash() {
 
 function compareHash() {
   const knownHash = document.getElementById('knownHash').value.trim();
+  const compareSource = document.getElementById('compareSource').value;
   const comparisonDiv = document.getElementById('comparisonResult');
 
   if (!knownHash) {
@@ -35,20 +36,37 @@ function compareHash() {
     return;
   }
 
-  if (currentHash && currentHash === knownHash) {
-    comparisonDiv.innerHTML = `<span style="color:green;">✅ Match with current file: ${currentFilename}</span>`;
-    comparisonDiv.classList.remove('hidden');
-    return;
+  let targetHash = '';
+  let sourceLabel = '';
+
+  if (compareSource === 'current') {
+    if (!currentHash) {
+      comparisonDiv.textContent = "No current file hash available. Please generate one first.";
+      comparisonDiv.classList.remove('hidden');
+      return;
+    }
+    targetHash = currentHash;
+    sourceLabel = `current file: ${currentFilename}`;
+  } else if (compareSource === 'history') {
+    const history = JSON.parse(localStorage.getItem('hashHistory') || '[]');
+    if (history.length === 0) {
+      comparisonDiv.textContent = "No history available to compare.";
+      comparisonDiv.classList.remove('hidden');
+      return;
+    }
+    targetHash = history[0].hash; // Compare with most recent history entry
+    sourceLabel = `history file: ${history[0].filename}`;
   }
 
-  const match = checkHashInHistory(knownHash);
-  if (match) {
-    comparisonDiv.innerHTML = `<span style="color:blue;">🔍 Match found in history: ${match.filename}</span>`;
+  if (knownHash === targetHash) {
+    comparisonDiv.innerHTML = `<span style="color:green;">✅ Match with ${sourceLabel}</span>`;
   } else {
-    comparisonDiv.innerHTML = `<span style="color:red;">❌ No match found in history.</span>`;
+    comparisonDiv.innerHTML = `<span style="color:red;">❌ No match with ${sourceLabel}</span>`;
   }
+
   comparisonDiv.classList.remove('hidden');
 }
+
 
 function checkHashInHistory(hashToFind) {
   const history = JSON.parse(localStorage.getItem('hashHistory') || '[]');
@@ -72,12 +90,22 @@ function updateHistoryMenu() {
   }
 
   historyList.classList.remove('hidden');
-  history.forEach(item => {
+  history.forEach((item, index) => {
     const li = document.createElement('li');
-    li.innerHTML = `<strong>${item.filename}</strong><br><code>${item.hash}</code>`;
+    li.classList.add('history-item');
+    li.innerHTML = `
+      <div class="history-content">
+        <div class="hash-info">
+          <strong>${item.filename}</strong><br>
+          <code>${item.hash}</code>
+        </div>
+        <button class="compare-btn" onclick="compareToCurrent('${item.hash}', '${item.filename}')">Compare</button>
+      </div>
+    `;
     historyList.appendChild(li);
   });
 }
+
 
 // Load history on page load
 updateHistoryMenu();
@@ -87,3 +115,20 @@ function clearHistory() {
   updateHistoryMenu();
 }
 
+function compareToCurrent(historyHash, historyFilename) {
+  const comparisonDiv = document.getElementById('comparisonResult');
+
+  if (!currentHash) {
+    comparisonDiv.textContent = "No current file hash available. Please generate one first.";
+    comparisonDiv.classList.remove('hidden');
+    return;
+  }
+
+  if (currentHash === historyHash) {
+    comparisonDiv.innerHTML = `<span style="color:green;">Match with history file: ${historyFilename}</span>`;
+  } else {
+    comparisonDiv.innerHTML = `<span style="color:red;">No match with history file: ${historyFilename}</span>`;
+  }
+
+  comparisonDiv.classList.remove('hidden');
+}
