@@ -21,11 +21,16 @@
     </section>
 
     <section class="tool">
-      <h2>Compare with Known Hash</h2>
-      <input type="text" id="knownHash" placeholder="Paste known SHA-256 hash here" />
-      <button onclick="compareHash()">Compare</button>
-      <div id="comparisonResult" class="hidden"></div>
-    </section>
+  <h2>Compare with Known Hash</h2>
+  <input type="text" id="knownHash" placeholder="Paste known SHA-256 hash here" />
+  <label for="compareSource">Compare against:</label>
+  <select id="compareSource">
+    <option value="current">Current File</option>
+    <option value="history">History</option>
+  </select>
+  <button onclick="compareHash()">Compare</button>
+  <div id="comparisonResult" class="hidden"></div>
+</section>
 
     <section class="tool">
       <h2>History</h2>
