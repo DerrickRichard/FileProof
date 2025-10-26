@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FileProof | Verify File Integrity</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>FileProof</h1>
+    <p class="tagline">Verify file integrity with SHA-256 hashing</p>
+  </header>
+
+  <main>
+    <section class="tool">
+      <h2>Generate File Hash</h2>
+      <input type="file" id="fileInput" />
+      <button onclick="generateHash()">Generate SHA-256 Hash</button>
+      <div id="result" class="hidden"></div>
+    </section>
+
+    <section class="tool">
+      <h2>Compare with Known Hash</h2>
+      <input type="text" id="knownHash" placeholder="Paste known SHA-256 hash here" />
+      <button onclick="compareHash()">Compare</button>
+      <div id="comparisonResult" class="hidden"></div>
+    </section>
+
+    <section class="tool">
+      <h2>History</h2>
+      <ul id="historyList" class="hidden"></ul>
+      <button onclick="clearHistory()">Clear History</button>
+    </section>
+
+    <hr />
+
+    <section class="about">
+      <h2>About FileProof</h2>
+      <p>
+        <strong>FileProof</strong> was created by Derrick Richard to help users detect unauthorized changes to their files.
+        Upload your original file, then upload the new version and compare their hashes. If the hashes differ, your file has been modified.
+      </p>
+      <p>
+        <a href="https://derrickrichard.github.io/profile" target="_blank" rel="noopener noreferrer">
+          View Derrick Richard's Profile
+        </a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+  <p>
+    <a href="https://derrickrichard.github.io/FileProof/" target="_blank" rel="noopener noreferrer">FileProof</a> © 2025 by
+    <a href="https://derrickrichard.github.io/profile/" target="_blank" rel="noopener noreferrer">Derrick Richard</a> is licensed under
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>
+    <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC" style="max-width: 1em; max-height: 1em; margin-left: .2em;">
+    <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY" style="max-width: 1em; max-height: 1em; margin-left: .2em;">
+    <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="NC" style="max-width: 1em; max-height: 1em; margin-left: .2em;">
+    <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" alt="ND" style="max-width: 1em; max-height: 1em; margin-left: .2em;">
+  </p>
+</footer>
+
+
+
+  <script src="script.js"></script>
+</body>
+</html>
